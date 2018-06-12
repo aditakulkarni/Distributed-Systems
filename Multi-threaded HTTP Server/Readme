@@ -1,0 +1,47 @@
+1) How to compile and run code:
+Run the shell file server.sh as:
+./server.sh
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2) Description:
+	1) When server is started, it checks if the directory 'www' is present. Exits with error message if not.
+	2) Server keeps on checking for connections. It creates a new worker thread for every new connection.
+	3) It checks for the resource in 'www' directory. Builds response header with 200 OK if resource is present in directory or 404 Not Found otherwise.
+	4) It sends the response header along with response body through socket.
+	5) It increments the access count for the particular resource (mutex is used to avoid simultaneous access by multiple threads)
+	6) After succesfully completing above steps, it closes the connection.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3) Sample Input/Output:
+
+	1) Input from client side: wget http://remote03.cs.binghamton.edu:35647/lena_std.tif
+
+		Output: The resource is downloaded and following is displayed on client side=>
+
+--2017-09-19 14:57:51--  http://remote03.cs.binghamton.edu:35647/lena_std.tif
+Resolving remote03.cs.binghamton.edu (remote03.cs.binghamton.edu)... 128.226.180.165
+Connecting to remote03.cs.binghamton.edu (remote03.cs.binghamton.edu)|128.226.180.165|:35647... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 786572 (768K) [image/tiff]
+Saving to: ‘lena_std.tif.7’
+
+lena_std.tif.7      100%[===================>] 768.14K  --.-KB/s    in 0.004s  
+
+2017-09-19 14:57:51 (180 MB/s) - ‘lena_std.tif.7’ saved [786572/786572]
+
+The following is displayed on server side =>
+
+Host Name: remote03 Port Number: 35647
+/lena_std.tif|128.226.180.165|40746|1
+
+
+	2) Input from client side: wget http://remote03.cs.binghamton.edu:35647/unavailable_page.html
+
+		Output: Following is displayed on client side=>
+
+--2017-09-19 15:02:20--  http://remote03.cs.binghamton.edu:35647/unavailable_page.html
+Resolving remote03.cs.binghamton.edu (remote03.cs.binghamton.edu)... 128.226.180.165
+Connecting to remote03.cs.binghamton.edu (remote03.cs.binghamton.edu)|128.226.180.165|:35647... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2017-09-19 15:02:20 ERROR 404: Not Found.
+

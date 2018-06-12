@@ -1,0 +1,20 @@
+1) How to compile and run code:
+
+Steps:
+
+bash
+export PATH=$PATH:/home/yaoliu/src_code/local/bin
+thrift -gen py chord.thrift
+chmod +x init
+./init node.txt
+
+Run the shell file server.sh as:
+./server.sh [port_no]
+
+Running the client code:
+Run the shell file client.sh as:
+./client [server_ip] [server_port_no]
+
+eg: ./client remote00 9090
+
+2) Programming language used: Python

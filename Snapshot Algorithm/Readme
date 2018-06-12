@@ -1,0 +1,48 @@
+1) How to compile and run code:
+
+Steps:
+
+bash
+export PATH=/home/phao3/protobuf/bin/bin:$PATH
+protoc --python_out=./ bank.proto
+
+Run the branch file branch.sh as:
+./branch.sh [branch_name] [port_no]
+
+Running the controller file controller.sh as:
+./controller.sh [amount] [branch_list_file]
+
+2) Programming language used: Python
+
+3) Description:
+
+	Controller sends init_branch to all branches.
+	The branches update their balance and sets up one tcp connection between all other branches.
+	They keep on transferring random amount to each other at random intervals.
+	Controller periodically calls initSnapshot on random branch and the branch sends the snapshot by executing the algorithm.
+
+4) Sample Output:
+
+./controller.sh 3000 branches.txt 
+
+branches.txt:
+branch1 128.226.180.163 9007
+branch2 128.226.180.165 9008
+branch3 128.226.180.164 9009
+
+Output:
+
+Snapshot ID: 1
+branch1: 1060
+branch2->branch1:0
+branch3->branch1:0
+
+Snapshot ID: 1
+branch2: 980
+branch1->branch2:0
+branch3->branch2:0
+
+Snapshot ID: 1
+branch3: 960
+branch1->branch3:0
+branch2->branch3:0
